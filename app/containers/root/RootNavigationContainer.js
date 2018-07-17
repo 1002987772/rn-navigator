@@ -8,6 +8,7 @@ import {
 import HomeScreen from '../home/HomeScreen'
 import MineScreen from '../mine/MineScreen'
 import HotScreen from '../hot/HotScreen'
+import SetScreen from '../setting/SetScreen'
 
 
 // this is home page 
@@ -26,6 +27,9 @@ const MainNavigator = createStackNavigator({
 const ModalNabigator = createStackNavigator({
     Hot: {
         screen: HotScreen
+    },
+    Set: {
+        screen: SetScreen
     }
   },{
 
@@ -45,6 +49,6 @@ const RootNavigator = createStackNavigator({
     mode: 'modal',
     gesturesEnabled: false
   });
-  
+
 
 export default RootNavigator

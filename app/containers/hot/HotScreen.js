@@ -2,14 +2,38 @@ import React, {Component} from 'react'
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    Button
 } from 'react-native'
 
 export default class HotScreen extends Component{
+
+    static navigationOptions = ({ navigation, screenProps }) => {
+        return ({
+            headerLeft:(
+                <Text style={{marginLeft:15, width:30, textAlign:"center"}}
+                    onPress={() => {
+                        navigation.pop()
+                    }}
+                >
+                    返回　
+                </Text>
+            )
+        })
+      }
+
+    constructor(props){
+        super(props)
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                <Text>this is hot page</Text>
+                <Text onPress={
+                    () => {
+                        this.props.navigation.navigate('Set')
+                    }
+                }>this is hot page</Text>
             </View>
         )
     }
