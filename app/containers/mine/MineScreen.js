@@ -53,23 +53,24 @@ export default class MineScreen extends Component{
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     onScroll={this.onScroll}
+                    // scrollEnabled={false}
                     ref={(scroll)=>{
                         iconScroll = scroll
                     }}
                     style={[styles.scrollView]}>
-                    <TouchableWithoutFeedback onPress={this.onClick}>
+                    <TouchableWithoutFeedback onPress={()=>{this.onClick(1)}} key={0}>
                         <View  style={[styles.icon, {backgroundColor: '#f00', marginLeft:deviceWidth/2.0 - 40}]}></View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={this.onClick}>
+                    <TouchableWithoutFeedback onPress={()=>{this.onClick(2)}} key={1}>
                         <View  style={[styles.icon, {backgroundColor: '#ff0'}]}></View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={this.onClick}>
+                    <TouchableWithoutFeedback onPress={()=>{this.onClick(3)}} key={2}>
                         <View  style={[styles.icon, {backgroundColor: '#f0f'}]}></View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={this.onClick}>
+                    <TouchableWithoutFeedback onPress={()=>{this.onClick(4)}} key={3}>
                         <View  style={[styles.icon, {backgroundColor: '#0f0'}]}></View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={this.onClick}>
+                    <TouchableWithoutFeedback onPress={()=>{this.onClick(5)}} key={4}>
                         <View  style={[styles.icon, {backgroundColor: '#00f', marginRight:deviceWidth/2.0 - 40}]}></View>
                     </TouchableWithoutFeedback>
                 </ScrollView>
@@ -91,10 +92,11 @@ export default class MineScreen extends Component{
         iconScroll.scrollTo({x:distance, y:0, animated:true})
     }
 
-    onClick = (event) => {
-        let X = bannerScroll
-        // let index = X / deviceWidth
-        console.log(event)
+    onClick = (index) => {
+        let distance = 80 * (index - 1)
+        distance += 30 * (index - 1)
+        iconScroll.scrollTo({x:distance, y:0, animated:true})
+        bannerScroll.scrollTo({x:(index - 1) * deviceWidth, y: 0, animated: true})
     }
 }
 

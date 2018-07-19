@@ -9,12 +9,13 @@ import HomeScreen from '../home/HomeScreen'
 import MineScreen from '../mine/MineScreen'
 import HotScreen from '../hot/HotScreen'
 import SetScreen from '../setting/SetScreen'
+import AnalysisScreen from '../home/AnalysisScreen'
 
 
 // this is home page 
 const MainNavigator = createStackNavigator({
     Home:{
-        screen: HomeScreen
+        screen: AnalysisScreen
     },
     Mine:{
         screen: MineScreen

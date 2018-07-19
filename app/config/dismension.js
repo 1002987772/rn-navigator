@@ -25,6 +25,12 @@ import {
   
   export const deviceWidth = Dimensions.get('window').width;      //设备的宽度
   export const deviceHeight = Dimensions.get('window').height;    //设备的高度
+
+  /**
+   *  iphoneX 的导航栏高度为88   其他的为64
+   */
+  export const naigatorBarHeight = (Dimensions.get('window').width === 375 && Dimensions.get('window').height === 812) ? 88 : 64
+
   let fontScale = PixelRatio.getFontScale();                      //返回字体大小缩放比例
   
   let pixelRatio = PixelRatio.get();      //当前设备的像素密度
