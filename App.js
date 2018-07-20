@@ -1,38 +1,15 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import Root from './app/containers/root/RootNavigationContainer'
+import dva from './app/utils/dva'
+import models from './app/models/index'
 
-export default class App extends Component {
-  render() {
-    return (
-      <Root/>
-    );
-  }
-}
+const app = dva({
+  models: models,
+  onError(e) {
+  },
+})
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+const APP = app.start(<Root/>)
+
+export default APP

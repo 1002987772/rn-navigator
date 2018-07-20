@@ -10,20 +10,19 @@ import {
 import {deviceWidth , deviceHeight, naigatorBarHeight} from '../../config/dismension'
 import RootStyles from '../root/RootStyles'
 import LinearGradient from 'react-native-linear-gradient'
+import ListItem from './ListItem'
 
 export default class AnalysisItem extends Component{
     constructor(props) {
         super(props);
         this.state={
             ...props,
-            suggestion:{
-                showAnim:new Animated.Value(0),
-                show: false
-            },
-            attention:{
-                showAnim:new Animated.Value(0),
-                show: false
-            }
+            suggestionAnim: new Animated.Value(0),
+            suggestionShow: false,
+            attentionAnim: new Animated.Value(0),
+            attentionShow: false,
+            doctorTextHeight: 0,
+            attentionTextHeight: 0
         };
     }
 
@@ -64,7 +63,7 @@ export default class AnalysisItem extends Component{
                 </View>
                 <Animated.View
                     style={{
-                      height:this.state.suggestion.showAnim.interpolate({
+                      height:this.state.suggestionAnim.interpolate({
                         inputRange: [0, 1],
                         outputRange: [0, this.state.doctorTextHeight]
                       }),
@@ -75,6 +74,7 @@ export default class AnalysisItem extends Component{
                     <Text
                           numberOfLines={0}
                           ellipsizeMode={'clip'}
+                          onLayout={this.doctorSugesstionsTextOnLayout.bind(this)}
                           style={styles.detailText}>
                         医生的建议：多吃饭多吃饭多吃饭多吃饭多吃饭多吃饭多吃饭多吃饭多
                         吃饭多吃饭多吃饭多睡觉多睡觉多睡觉多睡觉多睡觉多睡觉多睡觉多睡觉
@@ -89,15 +89,15 @@ export default class AnalysisItem extends Component{
 
     renderAttentionItem() {
         return (
-            <View style={{ borderBottomWidth: 1, borderColor: '#ddd', backgroundColor:'#f00', flexDirection:'row'}}>
-                <Text style={{left: 10, fontSize: 16, alignSelf:'flex-start'}}>体重指数</Text>
-                <Text 
-                    onLayout={this.attentionTextLayout} 
-                    style={{fontSize: 16, color: '#d00', alignSelf:'flex-end', padding: 10, backgroundColor:'#0f0', position:'absolute'}}>
-                    测试数据测试数据测试数据{'\n'}
-                    测试数据测试数据测试数据{'\n'}
-                    测试数据测试数据测试数据{'\n'}
-                    测试数据测试数据测试数据</Text>
+                <View>
+                    <ListItem 
+                    text=" 多睡觉多睡觉多睡觉多喝水多喝水多喝水多喝水多喝水多喝水多喝水83多睡觉多睡觉多睡觉多喝水多喝水多喝水多多睡觉多睡觉多睡觉多喝水多喝水多喝水多喝水多喝水多喝水多喝水83多睡觉多睡觉多睡觉多喝水多喝水多喝水多喝水多喝水多喝水多喝水83喝水多喝水多喝水多喝水83多睡觉多睡觉多睡觉多喝水多喝水多喝水多喝水多喝水多喝水多喝水83多睡觉多睡觉多睡觉多喝水多喝水多喝水多喝水多喝水多喝水多喝水83"
+                    getListItemContentHeight={this.getListItemContentHeight.bind(this)}
+                ></ListItem>
+                <ListItem 
+                    text="多睡觉多喝水多喝水多喝水多喝水多喝水多喝水多喝水83"
+                    getListItemContentHeight={this.getListItemContentHeight.bind(this)}
+                ></ListItem>
             </View>
         )
     }
@@ -105,14 +105,14 @@ export default class AnalysisItem extends Component{
     renderAnalysisItemAttentions() {
       return(
         <View>
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={this.attentClick.bind(this)}>
                 <View style={{height: 80, flexDirection:'row', alignItems:'center'}}>
                     <Text style={{fontSize: 18, paddingLeft: 15}}>需要重点关注<Text style={{color:'#f00'}}>5</Text>个项目</Text>
                 </View>
             </TouchableWithoutFeedback>
             <Animated.View
                     style={{
-                      height:this.state.attention.showAnim.interpolate({
+                      height:this.state.attentionAnim.interpolate({
                         inputRange: [0, 1],
                         outputRange: [0, this.state.attentionTextHeight]
                       }),
@@ -134,29 +134,43 @@ export default class AnalysisItem extends Component{
   
     attentionTextLayout(event){
         const layout = event.nativeEvent.layout;
-        console.log(layout)
+        this.setState({
+            attentionTextHeight: layout.height
+        })
     }
 
     analysisDetailClick(){
         Animated.timing(          // Uses easing functions
-        this.state.showAnim,    // The value to drive
+            this.state.suggestionAnim,    // The value to drive
         {
             duration:300,
-            toValue: this.showorhide==0?1:0
+            toValue: this.suggestionShow ? 1 : 0
         }            // Configuration
         ).start();
-        this.showorhide = this.showorhide == 0 ? 1 : 0;
+        this.suggestionShow = this.suggestionShow ? false : true
+
     }
 
     attentClick() {
         Animated.timing(          // Uses easing functions
-            this.state.showAttentionAnim,    // The value to drive
+            this.state.attentionAnim,    // The value to drive
             {
-            duration:300,
-            toValue: this.showAttention==0?1:0
+                duration:300,
+                toValue: this.showAttention ? 1 : 0
             }            // Configuration
         ).start();
-        this.showAttention = this.showAttention == 0 ? 1 : 0;
+        this.showAttention = this.showAttention ? false : true
+    }
+
+
+    getListItemContentHeight(height){
+        let attentionTextHeight = this.state.attentionTextHeight
+        this.setState({
+            attentionTextHeight: attentionTextHeight + height
+        }, () =>{
+            console.log('getheight: ' + attentionTextHeight)
+
+        })
     }
 
     render() {
@@ -204,6 +218,7 @@ const styles=StyleSheet.create({
       shadowRadius: 5,
       shadowColor: '#666',
       backgroundColor: '#fff',
+      marginBottom: 30
     //   overflow: 'hidden'
     },
 
